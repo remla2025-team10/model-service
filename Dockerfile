@@ -9,4 +9,6 @@ RUN pip install -r requirements.txt
 COPY model-service/ .
 RUN python download_models.py
 
+EXPOSE 3000
+
 CMD ["python", "app.py"]
