@@ -4,8 +4,10 @@ import pandas as pd
 import pickle
 import joblib
 import os
+from flasgger import Swagger
 
 app = Flask(__name__)
+swagger = Swagger(app)
 
 # Funcion to load environment variables from ../.env file
 def load_env_file(path):
@@ -17,12 +19,41 @@ def load_env_file(path):
 load_env_file("../.env")
 vectorizer_path = os.environ["VECTORIZER_MODEL"]
 classifier_path = os.environ["CLASSIFIER_MODEL"]
+port = os.environ.get("PORT", 3000)
 
 vectorizer = pickle.load(open(vectorizer_path, "rb"))
 classifier = joblib.load(classifier_path)
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    """
+    Predict the sentiment of a review.
+    ---
+    summary: Returns either 1 or 0, based on whether the predicted sentiment is positive or negative.
+    param review: The review text to be analyzed.
+    parameters:
+        -   in: body
+            name: body
+            required: true
+            schema:
+                type: object
+                required:
+                    - Review
+                properties:
+                    Review:
+                        type: string
+                        example: "We are so glad we found this place."
+    
+    responses:
+        200:
+            description: A JSON object containing the prediction.
+            schema:
+                type: object
+                properties:
+                    prediction:
+                        type: integer
+                        example: 1
+    """
     data = request.get_json()
     review = data.get("Review", "")
 
@@ -32,8 +63,8 @@ def predict():
 
     X_Fresh = vectorizer.transform([processed_review]).toarray()
     prediction = int(classifier.predict(X_Fresh)[0])
-    
+
     return jsonify({"prediction": prediction})
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=3000)
+    app.run(host="0.0.0.0", port=port)
