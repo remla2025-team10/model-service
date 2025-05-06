@@ -1,7 +1,7 @@
 # Model Service
 The service is available as a container image that is hosted on the Github Container Registry:
 ```
-ghcr.io/remla2025-team10/model-service:v0.0.2
+ghcr.io/remla2025-team10/model-service:v0.0.4
 ```
 
 ## Example Usage
