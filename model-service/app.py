@@ -5,9 +5,16 @@ import pickle
 import joblib
 import os
 from flasgger import Swagger
+from download_models import download_models
 
 app = Flask(__name__)
 swagger = Swagger(app)
+
+model_env_path = os.path.join("models", "models.env")
+
+if not os.path.exists(model_env_path):
+    print("Models not found. Downloading models...")
+    download_models()
 
 # Funcion to load environment variables from ../.env file
 def load_env_file(path):
@@ -16,10 +23,12 @@ def load_env_file(path):
             key, val = line.strip().split("=")
             os.environ[key] = val
 
-load_env_file("../.env")
-vectorizer_path = os.environ["VECTORIZER_MODEL"]
-classifier_path = os.environ["CLASSIFIER_MODEL"]
-port = os.environ.get("PORT", 3000)
+load_env_file(model_env_path)
+vectorizer_path = os.path.join("models", os.environ["VECTORIZER_MODEL"])
+classifier_path = os.path.join("models", os.environ["CLASSIFIER_MODEL"])
+port = int(os.environ.get("PORT", 3000))
+
+print(vectorizer_path)
 
 vectorizer = pickle.load(open(vectorizer_path, "rb"))
 classifier = joblib.load(classifier_path)
