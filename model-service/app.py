@@ -33,6 +33,20 @@ print(vectorizer_path)
 vectorizer = pickle.load(open(vectorizer_path, "rb"))
 classifier = joblib.load(classifier_path)
 
+example_password = None
+password_path = os.environ.get("PASSWORD_PATH")
+
+if password_path and os.path.exists(password_path):
+    try:
+        with open(password_path, "r") as f:
+            example_password = f.read().strip()
+        
+        if example_password:
+            print(f"Example password loaded from {password_path}")
+    except Exception as e:
+        print(f"Error reading password file: {e}")
+
+
 @app.route('/predict', methods=['POST'])
 def predict():
     """
