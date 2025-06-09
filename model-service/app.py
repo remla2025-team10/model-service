@@ -13,7 +13,8 @@ swagger = Swagger(app)
 model_env_path = os.path.join("models", "models.env")
 
 if not os.path.exists(model_env_path):
-    print("Models not found. Downloading models...")
+    print("Debug listing of files present in /model-service/models: ", os.listdir("./models"))
+    print(f"Models not found at {model_env_path}. Downloading models...")
     download_models()
 
 # Funcion to load environment variables from ../.env file
