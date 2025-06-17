@@ -11,8 +11,6 @@ permissions:
 jobs:
   prerelease:
     runs-on: ubuntu-latest
-    env:
-      VERSION_FILE: "src/lib_version/VERSION"
 
     steps:
       - name: Checkout code

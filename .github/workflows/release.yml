@@ -78,7 +78,6 @@ jobs:
        # Remove the pushed tags
       - name: Remove tags
         run: |
-          git checkout -b main
           if [[ "$GITHUB_REF" == "refs/tags/release" ]]; then
             git tag -d release
             git push origin :release
@@ -87,6 +86,11 @@ jobs:
             git push origin :v${{ steps.version.outputs.version }}
           fi
 
+      - name: Push stable tag
+        run: |
+          git tag "v${{ steps.version.outputs.version }}"
+          git push origin "v${{ steps.version.outputs.version }}"
+                
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
