@@ -4,8 +4,6 @@ on:
   push:
     branches: ['*']
     tags: ['*']
-  pull_request:
-    branches: ['main']
 
 permissions:
   contents: write
@@ -51,6 +49,9 @@ jobs:
 
           echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
