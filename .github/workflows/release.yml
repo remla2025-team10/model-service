@@ -3,7 +3,9 @@ name: Release and Version
 on:
   push:
     branches: ['*']
-    tags: ['*']
+    tags:
+      - 'release'
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 
 permissions:
   contents: write
