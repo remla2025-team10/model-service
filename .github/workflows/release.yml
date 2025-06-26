@@ -109,7 +109,7 @@ jobs:
           git pull origin main
 
           echo "Creating empty commit for $PRE_VERSION"
-          git commit --allow-empty -m "chore: bump version to $PRE_VERSION"
+          git commit --allow-empty -m "chore: bump version to $PRE_VERSION [skip ci]"
           git tag "$PRE_VERSION"
 
           git push origin main
